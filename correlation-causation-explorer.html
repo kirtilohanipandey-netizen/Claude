@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Correlation ≠ Causation Explorer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .case-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .case-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .case-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+        }
+
+        .case-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .case-title {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .scenario-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3498db;
+        }
+
+        .data-visual {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: monospace;
+        }
+
+        .question-section {
+            margin-bottom: 20px;
+        }
+
+        .question {
+            color: #e74c3c;
+            font-weight: bold;
+            margin-bottom: 10px;
+            cursor: pointer;
+            padding: 10px;
+            background: #ffeaa7;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .question:hover {
+            background: #fdcb6e;
+        }
+
+        .answer {
+            display: none;
+            background: #d5f4e6;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            border-left: 4px solid #27ae60;
+            animation: slideDown 0.3s ease;
+        }
+
+        .answer.show {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .correlation-tag {
+            background: #ff7675;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .causation-tag {
+            background: #fd79a8;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .reality-tag {
+            background: #00b894;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .interactive-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .interactive-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.3);
+            height: 10px;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #00b894, #00cec9);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 5px;
+        }
+
+        .summary-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-top: 30px;
+        }
+
+        .key-points {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .key-point {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #6c5ce7;
+        }
+
+        .emoji {
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .case-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .case-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Correlation ≠ Causation Explorer</h1>
+            <p>MYP Humanities: Population & Migration Unit</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <div class="case-container" id="caseContainer">
+            <!-- Cases will be dynamically loaded here -->
+        </div>
+
+        <div class="summary-section">
+            <h2>🎯 Key Learning Points</h2>
+            <div class="key-points">
+                <div class="key-point">
+                    <h3><span class="emoji">📊</span>Correlation</h3>
+                    <p>When two things happen at the same time or show similar patterns. This doesn't mean one causes the other!</p>
+                </div>
+                <div class="key-point">
+                    <h3><span class="emoji">⚡</span>Causation</h3>
+                    <p>When one event directly causes another to happen. This requires evidence, not just timing or correlation.</p>
+                </div>
+                <div class="key-point">
+                    <h3><span class="emoji">🔍</span>Critical Thinking</h3>
+                    <p>Always ask: What other factors might explain this? What additional evidence do we need?</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const cases = [
+            {
+                title: "📈 Immigration & Crime Data",
+                scenario: "Between 2010 and 2020, City A's immigrant population grew by 40%. During the same period, crime rates increased by 15%.",
+                data: "2010: 50,000 immigrants, 2,500 crimes\n2020: 70,000 immigrants, 2,875 crimes",
+                questions: [
+                    {
+                        q: "🤔 Does this data prove that immigrants caused the rise in crime?",
+                        a: "No! This is correlation, not causation. Two things happening at the same time doesn't mean one caused the other. We need much more evidence to establish causation."
+                    },
+                    {
+                        q: "🕵️ What other factors might explain the crime increase?",
+                        a: "Many possibilities: economic recession, cuts to social services, changes in policing methods, population growth overall, drug epidemics, youth unemployment, or changes in how crimes are reported."
+                    },
+                    {
+                        q: "🧪 How could we test whether migration actually caused the change?",
+                        a: "Compare with similar cities without immigration increases, examine crime types, look at economic data, study longer time periods, and analyze crime rates per capita rather than total numbers."
+                    }
+                ]
+            },
+            {
+                title: "🏙️ Population Density & Poverty",
+                scenario: "District X has very high population density (5,000 people/km²) and poverty rates of 25%. Rural District Y has low density (50 people/km²) and poverty rates of 8%.",
+                data: "District X: Dense urban area, 25% poverty\nDistrict Y: Rural area, 8% poverty",
+                questions: [
+                    {
+                        q: "🤔 Does this mean overcrowding causes poverty?",
+                        a: "Not necessarily! While there's a correlation, density itself doesn't create poverty. Many dense areas (like Manhattan or Singapore) are very wealthy."
+                    },
+                    {
+                        q: "🌍 What other social, political, or economic factors could be involved?",
+                        a: "Historical discrimination, lack of good jobs, poor education systems, limited social services, industrial decline, unequal resource distribution, or government policies that concentrate poverty in certain areas."
+                    },
+                    {
+                        q: "📊 How could comparing more regions help clarify the relationship?",
+                        a: "Study dense wealthy areas vs. dense poor areas, examine rural poverty vs. urban poverty, look at how density and poverty change over time, and compare countries with different policies."
+                    }
+                ]
+            },
+            {
+                title: "💼 Migration & Unemployment",
+                scenario: "Regional data shows a concerning pattern over two years.",
+                data: "2018: 20,000 migrants arrive, unemployment = 7%\n2019: 40,000 migrants arrive, unemployment = 9%",
+                questions: [
+                    {
+                        q: "📈 Is the rising unemployment caused by migrants?",
+                        a: "We can't conclude that from this data alone! The correlation could be coincidental. Many factors affect unemployment rates beyond immigration."
+                    },
+                    {
+                        q: "🔍 Could there be hidden variables like factory closures or economic slowdown?",
+                        a: "Absolutely! Major factory closures, automation replacing workers, economic recession, seasonal employment changes, or new trade policies could all impact unemployment regardless of migration."
+                    },
+                    {
+                        q: "📋 What additional data would you need before making a conclusion?",
+                        a: "Employment data by sector, information about business closures, economic indicators, education levels of both migrants and locals, and comparison with areas that didn't receive migrants."
+                    }
+                ]
+            },
+            {
+                title: "👩‍🎓 Education & Birth Rates",
+                scenario: "Country Z has 85% female secondary education completion and an average of 1.8 children per woman. Country W has 45% completion and 4.2 children per woman.",
+                data: "Country Z: 85% female education, 1.8 birth rate\nCountry W: 45% female education, 4.2 birth rate",
+                questions: [
+                    {
+                        q: "🎓 Is education alone the cause of lower birth rates?",
+                        a: "Education is likely a contributing factor, but it's not the only cause. Many interconnected factors influence birth rates beyond just education levels."
+                    },
+                    {
+                        q: "🏥 What other factors might influence this relationship?",
+                        a: "Healthcare access (including contraception), urbanization, economic opportunities for women, cultural attitudes toward family size, government policies, religious beliefs, and general economic development."
+                    },
+                    {
+                        q: "🔬 How could you investigate this relationship further?",
+                        a: "Study countries with similar education but different birth rates, examine how birth rates change as education improves over time, and control for other variables like income and healthcare access."
+                    }
+                ]
+            },
+            {
+                title: "🦠 Migration & Disease Spread",
+                scenario: "A flu outbreak occurs in Region B just two weeks after 15,000 migrant workers arrive from various countries for seasonal agricultural work.",
+                data: "Timeline: Workers arrive → 2 weeks later → Flu outbreak begins",
+                questions: [
+                    {
+                        q: "🚨 Is it fair to conclude migrants brought the disease?",
+                        a: "No! This timing could be coincidental. Flu outbreaks have many causes, and jumping to conclusions can lead to unfair blame and discrimination against migrant communities."
+                    },
+                    {
+                        q: "🌡️ What alternative explanations might there be?",
+                        a: "Seasonal flu patterns, poor living/working conditions, inadequate healthcare, overcrowded housing, stress weakening immune systems, or the disease could have already been present in the community."
+                    },
+                    {
+                        q: "⚖️ How does jumping to conclusions affect policy and perception?",
+                        a: "It can lead to discriminatory policies, scapegoating of vulnerable groups, ineffective public health responses, and damage to community relations. Good policy requires evidence-based analysis, not assumptions."
+                    }
+                ]
+            }
+        ];
+
+        let completedCases = 0;
+
+        function loadCases() {
+            const container = document.getElementById('caseContainer');
+            
+            cases.forEach((caseData, index) => {
+                const caseCard = document.createElement('div');
+                caseCard.className = 'case-card';
+                caseCard.innerHTML = `
+                    <div class="case-title">${caseData.title}</div>
+                    <div class="correlation-tag">📊 Correlation Observed</div>
+                    
+                    <div class="scenario-box">
+                        <strong>📋 Case Scenario:</strong><br>
+                        ${caseData.scenario}
+                    </div>
+                    
+                    <div class="data-visual">
+                        <strong>📈 Data:</strong><br>
+                        ${caseData.data.replace(/\n/g, '<br>')}
+                    </div>
+                    
+                    <div class="question-section">
+                        ${caseData.questions.map((qa, qIndex) => `
+                            <div class="question" onclick="toggleAnswer(${index}, ${qIndex})">
+                                ${qa.q}
+                            </div>
+                            <div class="answer" id="answer-${index}-${qIndex}">
+                                <strong>💡 Analysis:</strong><br>
+                                ${qa.a}
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <button class="interactive-btn" onclick="completeCase(${index})">
+                        ✅ Mark Case Complete
+                    </button>
+                `;
+                container.appendChild(caseCard);
+            });
+        }
+
+        function toggleAnswer(caseIndex, questionIndex) {
+            const answerId = `answer-${caseIndex}-${questionIndex}`;
+            const answerElement = document.getElementById(answerId);
+            
+            if (answerElement.classList.contains('show')) {
+                answerElement.classList.remove('show');
+            } else {
+                answerElement.classList.add('show');
+            }
+        }
+
+        function completeCase(caseIndex) {
+            const caseCard = document.querySelectorAll('.case-card')[caseIndex];
+            if (!caseCard.style.opacity || caseCard.style.opacity === '1') {
+                caseCard.style.opacity = '0.7';
+                caseCard.style.transform = 'scale(0.95)';
+                completedCases++;
+                updateProgress();
+                
+                // Add completion badge
+                if (!caseCard.querySelector('.completion-badge')) {
+                    const badge = document.createElement('div');
+                    badge.className = 'completion-badge';
+                    badge.style.cssText = `
+                        position: absolute;
+                        top: 15px;
+                        right: 15px;
+                        background: #00b894;
+                        color: white;
+                        padding: 5px 10px;
+                        border-radius: 15px;
+                        font-size: 0.8rem;
+                    `;
+                    badge.textContent = '✅ Complete';
+                    caseCard.appendChild(badge);
+                }
+            }
+        }
+
+        function updateProgress() {
+            const progressFill = document.getElementById('progressFill');
+            const percentage = (completedCases / cases.length) * 100;
+            progressFill.style.width = percentage + '%';
+            
+            if (completedCases === cases.length) {
+                setTimeout(() => {
+                    alert('🎉 Congratulations! You\'ve completed all case studies. You\'re now better equipped to identify when correlation does NOT equal causation in population and migration data!');
+                }, 500);
+            }
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCases();
+        });
+    </script>
+</body>
+</html>
