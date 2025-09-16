@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MYP 5: 4P Formula & Research Sources</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .poster {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #ff6b6b, #ffa500);
+            padding: 30px;
+            text-align: center;
+            color: white;
+        }
+        
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.9;
+        }
+        
+        .opening-statement {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+            padding: 25px;
+            text-align: center;
+            font-size: 1.1em;
+            line-height: 1.6;
+            border-bottom: 4px solid #0984e3;
+        }
+        
+        .opening-statement strong {
+            font-size: 1.2em;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+        
+        .content {
+            padding: 40px;
+            display: grid;
+            gap: 30px;
+        }
+        
+        .formula-section {
+            background: linear-gradient(135deg, #a8e6cf, #7fcdcd);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .formula-title {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 2.2em;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .formula-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .formula-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .formula-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+        }
+        
+        .formula-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        
+        .people { color: #e74c3c; }
+        .place { color: #3498db; }
+        .phenomena { color: #f39c12; }
+        .process { color: #27ae60; }
+        
+        .formula-card p {
+            color: #555;
+            font-size: 1.05em;
+            line-height: 1.5;
+        }
+        
+        .command-terms {
+            background: rgba(255,255,255,0.9);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+        
+        .command-terms h4 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+        
+        .command-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+        }
+        
+        .command-term {
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        .example-section {
+            background: #e8f5e8;
+            border: 3px solid #4caf50;
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 25px;
+        }
+        
+        .example-title {
+            color: #2e7d32;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.6em;
+        }
+        
+        .example-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .breakdown-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid;
+        }
+        
+        .breakdown-item.people { border-left-color: #e74c3c; }
+        .breakdown-item.place { border-left-color: #3498db; }
+        .breakdown-item.phenomena { border-left-color: #f39c12; }
+        .breakdown-item.process { border-left-color: #27ae60; }
+        
+        .breakdown-item strong {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+        
+        .final-question {
+            background: rgba(46, 125, 50, 0.1);
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #4caf50;
+        }
+        
+        .final-question p {
+            color: #1b5e20;
+            font-weight: 600;
+            font-size: 1.2em;
+            text-align: center;
+            line-height: 1.4;
+        }
+        
+        .sources-section {
+            background: #f8f9ff;
+            padding: 30px;
+            border-radius: 20px;
+            border-left: 6px solid #ffeaa7;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .sources-title {
+            font-size: 2em;
+            margin-bottom: 25px;
+            color: #2c3e50;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .sources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+        
+        .source-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-top: 4px solid;
+        }
+        
+        .source-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .primary { border-top-color: #e74c3c; }
+        .secondary { border-top-color: #3498db; }
+        .digital { border-top-color: #9b59b6; }
+        .print { border-top-color: #f39c12; }
+        .perspectives { border-top-color: #1abc9c; }
+        .media { border-top-color: #e67e22; }
+        
+        .source-card h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .source-card p {
+            color: #555;
+            line-height: 1.5;
+            font-size: 1.05em;
+        }
+        
+        .source-card strong {
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.2em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .formula-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .sources-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .command-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="poster">
+        <div class="header">
+            <h1>🎯 MYP 5 Research Mastery</h1>
+            <p>The 4P Formula & Source Selection Guide</p>
+        </div>
+        
+        <div class="opening-statement">
+            <strong>🔗 Remember:</strong> Your research question must be <strong>linked to and guided by your Statement of Inquiry</strong> and be <strong>age-appropriate</strong> for Year 5 level investigation. It should demonstrate sophisticated thinking while remaining manageable within your academic context.
+        </div>
+        
+        <div class="content">
+            <div class="formula-section">
+                <h2 class="formula-title">🔑 The 4P Formula for Perfect Research Questions</h2>
+                
+                <div class="formula-grid">
+                    <div class="formula-card">
+                        <h3 class="people">👥 PEOPLE</h3>
+                        <p>Who is involved? Which specific groups, individuals, demographics, or communities are central to your investigation?</p>
+                    </div>
+                    <div class="formula-card">
+                        <h3 class="place">📍 PLACE</h3>
+                        <p>Where did it happen? Identify the specific location, region, country, or geographical context that frames your study.</p>
+                    </div>
+                    <div class="formula-card">
+                        <h3 class="phenomena">⚡ PHENOMENA</h3>
+                        <p>What event or situation occurred? Include specific dates, time periods, or historical moments to focus your inquiry.</p>
+                    </div>
+                    <div class="formula-card">
+                        <h3 class="process">🔄 PROCESS</h3>
+                        <p>How or Why did it happen? Focus on causation, relationships, and analysis using strong command terms.</p>
+                    </div>
+                </div>
+                
+                <div class="command-terms">
+                    <h4>💪 Strong Command Terms for Academic Excellence</h4>
+                    <div class="command-grid">
+                        <div class="command-term">Analyze</div>
+                        <div class="command-term">Evaluate</div>
+                        <div class="command-term">Compare</div>
+                        <div class="command-term">Assess</div>
+                        <div class="command-term">Investigate</div>
+                        <div class="command-term">Examine</div>
+                        <div class="command-term">To what extent</div>
+                        <div class="command-term">How effectively</div>
+                    </div>
+                </div>
+                
+                <div class="example-section">
+                    <h3 class="example-title">🌟 4P Formula in Action</h3>
+                    
+                    <div class="example-breakdown">
+                        <div class="breakdown-item people">
+                            <strong class="people">👥 PEOPLE:</strong>
+                            18-25 year old voters
+                        </div>
+                        <div class="breakdown-item place">
+                            <strong class="place">📍 PLACE:</strong>
+                            United States
+                        </div>
+                        <div class="breakdown-item phenomena">
+                            <strong class="phenomena">⚡ PHENOMENA:</strong>
+                            2020 presidential election
+                        </div>
+                        <div class="breakdown-item process">
+                            <strong class="process">🔄 PROCESS:</strong>
+                            "How effectively did... influence"
+                        </div>
+                    </div>
+                    
+                    <div class="final-question">
+                        <p>"How effectively did social media campaigns influence voter turnout among 18-25 year olds during the 2020 US presidential election?"</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sources-section">
+                <h2 class="sources-title">
+                    <span>📚</span>
+                    <span>Diverse Information Sources with Specific Examples</span>
+                </h2>
+                
+                <div class="sources-grid">
+                    <div class="source-card primary">
+                        <h4>📄 Primary Sources</h4>
+                        <p><strong>Examples:</strong> Interview with Holocaust survivor, diary entries from Anne Frank, speeches by Martin Luther King Jr., government census data, archaeological artifacts, letters from WWI soldiers</p>
+                    </div>
+                    
+                    <div class="source-card secondary">
+                        <h4>📖 Secondary Sources</h4>
+                        <p><strong>Examples:</strong> History textbook analyzing WWI causes, biography of Einstein, academic article on climate change impacts, encyclopedia entries, historical analysis books</p>
+                    </div>
+                    
+                    <div class="source-card digital">
+                        <h4>💻 Digital Resources</h4>
+                        <p><strong>Examples:</strong> NASA's climate database, Library of Congress digital archives, Google Scholar articles, museum virtual collections, government statistics websites</p>
+                    </div>
+                    
+                    <div class="source-card print">
+                        <h4>📰 Print Materials</h4>
+                        <p><strong>Examples:</strong> The Guardian newspaper articles, National Geographic magazines, peer-reviewed journals like Nature, historical maps from atlases, academic research papers</p>
+                    </div>
+                    
+                    <div class="source-card perspectives">
+                        <h4>🌍 Multiple Perspectives</h4>
+                        <p><strong>Examples:</strong> Japanese vs. American accounts of Pearl Harbor, Indigenous perspectives on colonization, feminist analysis of literature, rural vs. urban viewpoints on policy</p>
+                    </div>
+                    
+                    <div class="source-card media">
+                        <h4>🎥 Electronic Media</h4>
+                        <p><strong>Examples:</strong> BBC documentary on ocean plastic, TED Talk by climate scientist, podcast interview with historian, YouTube educational channels like Crash Course</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="background: linear-gradient(135deg, #74b9ff, #0984e3); color: white; padding: 25px; border-radius: 15px; text-align: center;">
+                <h3 style="font-size: 1.5em; margin-bottom: 10px;">🚀 Your Research Success Formula</h3>
+                <p style="font-size: 1.1em; line-height: 1.6;"><strong>4P Framework + Diverse Sources + Statement of Inquiry Connection = Outstanding MYP 5 Research</strong></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
